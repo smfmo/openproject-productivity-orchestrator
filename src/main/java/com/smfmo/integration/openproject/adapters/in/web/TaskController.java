@@ -3,6 +3,7 @@ package com.smfmo.integration.openproject.adapters.in.web;
 import com.smfmo.integration.openproject.domain.model.Task;
 import com.smfmo.integration.openproject.ports.in.RunRulesPort;
 import com.smfmo.integration.openproject.ports.in.SyncTaskPort;
+import com.smfmo.integration.openproject.ports.out.NotificationPort;
 import com.smfmo.integration.openproject.ports.out.TaskRepositoryPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +19,15 @@ public class TaskController {
     private final TaskRepositoryPort taskRepositoryPort;
     private final SyncTaskPort syncTaskPort;
     private final RunRulesPort runRulesPort;
+    private final NotificationPort notificationPort;
 
     public TaskController(
-            TaskRepositoryPort taskRepositoryPort, SyncTaskPort syncTasksPort, RunRulesPort runRulesPort) {
+            TaskRepositoryPort taskRepositoryPort, SyncTaskPort syncTasksPort,
+            RunRulesPort runRulesPort, NotificationPort notificationPort) {
         this.taskRepositoryPort = taskRepositoryPort;
         this.syncTaskPort = syncTasksPort;
         this.runRulesPort = runRulesPort;
+        this.notificationPort = notificationPort;
     }
 
     /**
@@ -62,4 +66,12 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/test/email")
+    public ResponseEntity<Void> testEmail() {
+        notificationPort.send(
+                "[Openproject] Teste de notificação",
+                "email de teste!"
+        );
+        return ResponseEntity.ok().build();
+    }
 }

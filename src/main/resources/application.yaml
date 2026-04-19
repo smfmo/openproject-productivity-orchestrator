@@ -18,8 +18,12 @@ spring:
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     properties:
-      mail.smtp.auth: false
-      mail.smtp.starttls.enabled: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 openproject:
   base-url: ${OPENPROJECT_BASE_URL:https://your-instance.openproject.com}
